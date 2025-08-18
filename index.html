@@ -4,57 +4,127 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loan Repayment Table - YALO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root{
+      --bg: #ffffff;
+      --surface: #fbfdf9;
+      --muted: #f4f7f4;
+      --border: #e6ece6;
+      --header-bg: #eef6ec;
+      --paid-bg: #eaf8ec;
+      --paid-text: #1f7a3a;
+      --pending-bg: #fff8e6;
+      --pending-text: #9a5800;
+      --late-bg: #fff0f0;
+      --late-text: #c53030;
+    }
+
+    *{box-sizing:border-box}
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: white;
-      color: black;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      margin: 24px;
+      background-color: #f7f9f7;
+      color: #0f1720;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: white;
+
+    h2{
+      font-size:18px;
+      font-weight:600;
+      margin:0 0 12px 0;
+      color:#163c2a;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-      color: black;
+
+    /* Card-like table container */
+    #repaymentTable{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      border-radius:12px;
+      overflow:hidden;
+      background:var(--bg);
+      box-shadow:0 1px 0 rgba(16,24,32,0.04);
+      border:1px solid var(--border);
     }
-    th {
-      background-color: #f4f4f4;
+
+    thead th{
+      background:var(--header-bg);
+      color:#254c36;
+      text-align:left;
+      padding:14px 16px;
+      font-weight:600;
+      font-size:13px;
+      border-bottom:1px solid var(--border);
     }
-    .dropdown {
-      cursor: pointer;
-      color: black;
-      text-decoration: underline;
+
+    tbody tr{
+      border-bottom:1px solid var(--border);
+      background:var(--bg);
     }
-    .items {
-      display: none;
+
+    td{
+      padding:14px 16px;
+      vertical-align:middle;
+      font-size:14px;
+      color:#0f1720;
     }
-    .item-row td {
-      border-top: none;
-      padding-left: 30px; /* indentation for better hierarchy */
-      background-color: #fafafa; /* subtle background to distinguish */
+
+    /* Parent month link */
+    .dropdown{
+      cursor:pointer;
+      color:#163c2a;
+      text-decoration:none;
+      font-weight:600;
+      display:inline-block;
     }
-    .paid {
-      color: green;
-      font-weight: bold;
-      margin-left: 10px;
-      font-size: 0.9em;
+
+    /* Child rows styling and indentation */
+    .items{display:none}
+    .item-row td{border-top:none;padding-left:42px;background:#fcfefc}
+
+    /* Status badges adjusted to design system */
+    .paid{
+      display:inline-block;
+      background:var(--paid-bg);
+      color:var(--paid-text);
+      padding:6px 10px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:12px;
+      vertical-align:middle;
+      margin-left:10px;
     }
-    .pending {
-      color: orange;
-      font-weight: bold;
-      margin-left: 10px;
-      font-size: 0.9em;
+    .pending{
+      display:inline-block;
+      background:var(--pending-bg);
+      color:var(--pending-text);
+      padding:6px 10px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:12px;
+      vertical-align:middle;
+      margin-left:10px;
     }
-    .late {
-      color: red;
-      font-weight: bold;
-      margin-left: 10px;
-      font-size: 0.9em;
+    .late{
+      display:inline-block;
+      background:var(--late-bg);
+      color:var(--late-text);
+      padding:6px 10px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:12px;
+      vertical-align:middle;
+      margin-left:10px;
+    }
+
+    /* subtle hover for parent rows */
+    tbody tr:hover td{background:#fcfefc}
+
+    /* keep table responsive */
+    @media (max-width:640px){
+      td, thead th{padding:10px}
     }
   </style>
 </head>
