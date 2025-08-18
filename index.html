@@ -71,13 +71,37 @@
       color:#0f1720;
     }
 
-    /* Parent month link */
+    /* Parent month link styling */
     .dropdown{
       cursor:pointer;
       color:#163c2a;
       text-decoration:none;
       font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:6px 8px;
+      border-radius:8px;
+      transition:background-color .12s ease, transform .12s ease;
+    }
+    /* small arrow indicator */
+    .dropdown::before{
+      content:'▸';
       display:inline-block;
+      transform-origin:center;
+      transition:transform .15s ease, opacity .12s ease;
+      opacity:0.85;
+      font-size:12px;
+      color:#2b6a3b;
+    }
+    /* open state rotates arrow */
+    .dropdown.open::before{
+      transform:rotate(90deg);
+    }
+    /* hover hint for clickable area */
+    .dropdown:hover{
+      background:#f2fbf3;
+      text-decoration:none;
     }
 
     /* Child rows styling and indentation */
@@ -125,6 +149,7 @@
     /* keep table responsive */
     @media (max-width:640px){
       td, thead th{padding:10px}
+      .dropdown{gap:6px}
     }
   </style>
 </head>
@@ -189,7 +214,8 @@
         // For Security Deposit in April: not clickable and no child rows
         monthCell.innerHTML = `${month} ${statusHTML}`;
       } else {
-        monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}')">${month}</span> ${statusHTML}`;
+        // pass 'this' to toggleItems so we can toggle the open class for the arrow
+        monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}', this)">${month}</span> ${statusHTML}`;
       }
       row.appendChild(monthCell);
 
@@ -223,11 +249,20 @@
       }
     });
 
-    function toggleItems(id) {
+    function toggleItems(id, el) {
       const rows = document.querySelectorAll(`#${id}`);
+      // determine if currently open by checking first matching row
+      const first = rows[0];
+      const isOpen = first && first.style.display === "table-row";
+
       rows.forEach(row => {
-        row.style.display = row.style.display === "table-row" ? "none" : "table-row";
+        row.style.display = isOpen ? "none" : "table-row";
       });
+
+      // toggle arrow state on the clicked element (if provided)
+      if (el && el.classList) {
+        if (isOpen) el.classList.remove('open'); else el.classList.add('open');
+      }
     }
   </script>
 </body>
