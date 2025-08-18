@@ -40,21 +40,24 @@
     .paid {
       color: green;
       font-weight: bold;
+      margin-left: 10px;
+      font-size: 0.9em;
     }
     .pending {
       color: orange;
       font-weight: bold;
+      margin-left: 10px;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
-  <h2>YALO Loan Repayment Schedule</h2>
+  <h2>YALO Loan Repayment Schedule May 2025- January 2026 9 months </h2>
   <table id="repaymentTable">
     <thead>
       <tr>
         <th>Month</th>
-        <th>Amount Due</th>
-        <th>Status</th>
+        <th>Amount </th>
       </tr>
     </thead>
     <tbody>
@@ -78,8 +81,10 @@
 
     const tableBody = document.querySelector("#repaymentTable tbody");
 
-    function randomStatus() {
-      return Math.random() > 0.5 ? "<span class='paid'>Paid</span>" : "<span class='pending'>Pending</span>";
+    function randomStatusText() {
+      return Math.random() > 0.5 
+        ? "<span class='paid'>Paid</span>" 
+        : "<span class='pending'>Due</span>";
     }
 
     function randomDueDate(monthIndex) {
@@ -90,9 +95,14 @@
     months.forEach((month, index) => {
       const row = document.createElement("tr");
 
-      // Month column
+      // Month column with status beside month name
       const monthCell = document.createElement("td");
-      monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}')">${month}</span>`;
+      if (index === 0) {
+        // For Security Deposit in April: not clickable and no child rows
+        monthCell.innerHTML = `${month} ${randomStatusText()}`;
+      } else {
+        monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}')">${month}</span> ${randomStatusText()}`;
+      }
       row.appendChild(monthCell);
 
       // Amount column (sum of rent 150,000 + marketplace 50,000)
@@ -100,35 +110,29 @@
       amountCell.textContent = "₦200,000";
       row.appendChild(amountCell);
 
-      // Status column
-      const statusCell = document.createElement("td");
-      statusCell.id = `status-${index}`;
-      statusCell.textContent = "Pending";
-      statusCell.classList.add("pending");
-      row.appendChild(statusCell);
-
       tableBody.appendChild(row);
 
-      // Dropdown items as child rows with amount + due date in Amount Due column
-      const rentRow = document.createElement("tr");
-      rentRow.classList.add("item-row", "items");
-      rentRow.id = `items-${index}`;
-      rentRow.innerHTML = `
-        <td>Rent Financing</td>
-        <td>₦150,000 (Due: ${randomDueDate(index)})</td>
-        <td>${randomStatus()}</td>
-      `;
-      tableBody.appendChild(rentRow);
+      // If not the Security Deposit row, add child rows
+      if (index !== 0) {
+        // Dropdown items as child rows with amount in Amount column
+        const rentRow = document.createElement("tr");
+        rentRow.classList.add("item-row", "items");
+        rentRow.id = `items-${index}`;
+        rentRow.innerHTML = `
+          <td>Rent Financing</td>
+          <td>₦150,000</td>
+        `;
+        tableBody.appendChild(rentRow);
 
-      const marketRow = document.createElement("tr");
-      marketRow.classList.add("item-row", "items");
-      marketRow.id = `items-${index}`;
-      marketRow.innerHTML = `
-        <td>Marketplace (Fridge)</td>
-        <td>₦50,000 (Due: ${randomDueDate(index)})</td>
-        <td>${randomStatus()}</td>
-      `;
-      tableBody.appendChild(marketRow);
+        const marketRow = document.createElement("tr");
+        marketRow.classList.add("item-row", "items");
+        marketRow.id = `items-${index}`;
+        marketRow.innerHTML = `
+          <td>Marketplace (Fridge)</td>
+          <td>₦50,000</td>
+        `;
+        tableBody.appendChild(marketRow);
+      }
     });
 
     function toggleItems(id) {
@@ -140,3 +144,4 @@
   </script>
 </body>
 </html>
+
