@@ -49,6 +49,12 @@
       margin-left: 10px;
       font-size: 0.9em;
     }
+    .late {
+      color: red;
+      font-weight: bold;
+      margin-left: 10px;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
@@ -97,11 +103,22 @@
 
       // Month column with status beside month name
       const monthCell = document.createElement("td");
+
+      // For May (index 1) and June (index 2) show the new "Late" status in red
+      let statusHTML;
+      if (index === 0) {
+        statusHTML = "<span class='paid'>Paid</span>";
+      } else if (index === 1 || index === 2) {
+        statusHTML = "<span class='late'>Late</span>";
+      } else {
+        statusHTML = randomStatusText();
+      }
+
       if (index === 0) {
         // For Security Deposit in April: not clickable and no child rows
-        monthCell.innerHTML = `${month} ${randomStatusText()}`;
+        monthCell.innerHTML = `${month} ${statusHTML}`;
       } else {
-        monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}')">${month}</span> ${randomStatusText()}`;
+        monthCell.innerHTML = `<span class="dropdown" onclick="toggleItems('items-${index}')">${month}</span> ${statusHTML}`;
       }
       row.appendChild(monthCell);
 
@@ -144,4 +161,3 @@
   </script>
 </body>
 </html>
-
